@@ -32,6 +32,18 @@ html, body{
     left: calc(50% - 100px);
 }
 
+#indicator{
+    position: fixed;
+    object-fit: cover;
+    background-color: red;
+    height: 50px;
+    width: 50px;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    top: 10px;
+    left: 10px;
+}
+
+
 .taken{
     height: 100px!important;
     width: 100px!important;
