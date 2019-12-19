@@ -1,3 +1,6 @@
+var faceapi = require('face-api.js');
+
+
 // Set constraints for the video stream
 var constraints = { video: { facingMode: "user" }, audio: false };
 var track = null;
@@ -33,3 +36,7 @@ cameraTrigger.onclick = function() {
 
 // Start the video stream when the window loads
 window.addEventListener("load", cameraStart, false);
+console.log(faceapi.nets);
+console.log("hello");
+
+faceapi.loadFaceLandmarkModel("models");
