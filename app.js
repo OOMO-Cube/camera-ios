@@ -1,6 +1,6 @@
 var faceapi = require('face-api.js');
 
-let inputSize = 512
+let inputSize = 256
 let scoreThreshold = 0.5
 
 
@@ -15,17 +15,16 @@ const cameraSensor = document.querySelector("#camera--sensor");
 const cameraTrigger = document.querySelector("#camera--trigger");
 const cameraOverlay = document.querySelector("#camera--overlay");
 
-const options = new faceapi.TinyFaceDetectorOptions({ inputSize, scoreThreshold })
-
+const runOptions = new faceapi.TinyFaceDetectorOptions({ inputSize, scoreThreshold })
+const drawOptions = new faceapi.draw.DrawFaceLandmarksOptions({drawPoints: false, lineColor: "green"})
 
 async function onPlay() {
-  const result = await faceapi.detectSingleFace(cameraView, options).withFaceLandmarks()
+  const result = await faceapi.detectSingleFace(cameraView, runOptions).withFaceLandmarks(true)
   if (result) {
     const dims = faceapi.matchDimensions(cameraOverlay, cameraView, true)
     const resizedResult = faceapi.resizeResults(result, dims)
     // faceapi.draw.drawDetections(cameraOverlay, resizedResult)
-    faceapi.draw.drawFaceLandmarks(cameraOverlay, resizedResult);
-    setTimeout(() => onPlay());
+    faceapi.draw.drawFaceLandmarks(cameraOverlay, resizedResult, drawOptions);
   }
 
   setTimeout(() => onPlay())
@@ -36,7 +35,7 @@ cameraView.onplay = onPlay
 // Access the device camera and stream to cameraView
 async function cameraStart() {
 
-  await faceapi.loadFaceLandmarkModel("models");
+  await faceapi.nets.faceLandmark68TinyNet.loadFromUri("models");
   await faceapi.nets.tinyFaceDetector.loadFromUri('models')
 
   navigator.mediaDevices
